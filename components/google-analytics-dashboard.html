@@ -1,5 +1,5 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../google-signin/google-signin-aware.html">
+<link rel="import" href="../static/lib/polymer/polymer.html">
+<link rel="import" href="../static/lib/google-signin/google-signin-aware.html">
 
 <!--
 Container element for binding Google Analytics controls to Google Analytics charts.
@@ -34,9 +34,6 @@ update query parameters.
 <dom-module id="google-analytics-dashboard">
 
   <template>
-    <google-signin-aware
-      on-google-signin-aware-success="_signedIn"
-      on-google-signin-aware-signed-out="_signedOut"></google-signin-aware>
     <content id="content"></content>
   </template>
 
@@ -106,9 +103,9 @@ update query parameters.
        * @method updateChildren
        */
       updateChildren: function() {
-        if (!this.authorized) {
-          return;
-        }
+        // if (!this.authorized) {
+        //   return;
+        // }
         var charts = Polymer.dom(this).querySelectorAll('google-analytics-chart');
         for (var i = 0, chart; chart = charts[i]; i++) {
           Object.keys(this.query).forEach(function(key) {
