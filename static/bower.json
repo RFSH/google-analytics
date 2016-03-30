@@ -25,7 +25,8 @@
     "promise-polyfill": "PolymerLabs/promise-polyfill#^1.0.0",
     "ga-api-utils": "googleanalytics/javascript-api-utils#^0.2.0",
     "google-chart": "GoogleWebComponents/google-chart#^1.0.0",
-    "google-signin": "GoogleWebComponents/google-signin#^1.0.0"
+    "bootstrap" : "~3.3",
+    "jquery": ">=2.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.2"

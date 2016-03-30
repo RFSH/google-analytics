@@ -19,7 +19,7 @@ Google Chart.
       max-results="5">
     </google-analytics-chart>
 
-@element google-analytics-chart
+@element ç
 @demo
 @homepage https://googlewebcomponents.github.io/google-analytics
 -->
@@ -34,8 +34,8 @@ Google Chart.
       -webkit-flex-direction: column;
       -ms-flex-direction: column;
       flex-direction: column;
-      width: 400px;
-      height: 300px;
+      /*width: 400px;*/
+      /*height: 300px;*/
     }
     :host > * {
       -webkit-flex: 0 0 auto;
@@ -71,7 +71,15 @@ Google Chart.
       src-param="gwc-ga-chart"
       ></google-analytics-query>
     <content select="header,h1,h2,h3,h4,h5,h6"></content>
-    <google-chart id="chart"
+    <div class="chart-loader" hidden$="{{!loading}}">
+      <div class="loader">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="small">Loading</p>
+    </div>
+    <google-chart id="chart" hidden$="{{loading}}"
       type="{{type}}"
       data="{{data.dataTable}}">
     </google-chart>
@@ -152,7 +160,8 @@ Google Chart.
           type: Boolean,
           value: false,
           notify: true,
-          reflectToAttribute: true
+          reflectToAttribute: true,
+          observer: "_changeLoader"
         },
 
         /**
@@ -240,6 +249,14 @@ Google Chart.
           ensureProperDataTableTypes(response.dataTable);
           this.$.query.setData(response);
         }.bind(this));
+      },
+
+      _changeLoader: function(newValue, oldValue){
+        if(newValue){
+
+        }else{
+
+        }
       }
     });
 

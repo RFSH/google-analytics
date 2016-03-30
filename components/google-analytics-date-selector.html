@@ -50,24 +50,28 @@ Element for selecting the start and end date values for queries inside a
   </style>
 
   <template>
-    <span class="control">
-      <label for="startDate">Start Date</label>
-      <input
-        id="startDate"
-        type="date"
-        value="{{startDate::change}}"
-        min="{{minStartDate}}"
-        max="{{endDate}}">
-    </span>
-    <span class="control">
-      <label for="endDate">End Date</label>
-      <input
-        id="endDate"
-        type="date"
-        value="{{endDate::change}}"
-        min="{{startDate}}"
-        max="{{maxEndDate}}">
-    </span>
+    <div class="form-inline">
+      <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <input
+          class="form-control"
+          id="startDate"
+          type="date"
+          value="{{startDate::change}}"
+          min="{{minStartDate}}"
+          max="{{endDate}}">
+      </div>
+      <div class="form-group">
+        <label for="endDate">End Date</label>
+        <input
+          class="form-control"
+          id="endDate"
+          type="date"
+          value="{{endDate::change}}"
+          min="{{startDate}}"
+          max="{{maxEndDate}}">
+      </div>
+    </div>
   </template>
 
 </dom-module>

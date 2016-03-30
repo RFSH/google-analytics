@@ -102,7 +102,6 @@ Loads gapi.client.analytics, and watches user signed-in state.
 
       handleAuthSuccess: function (data) {
         this._setToken(data.detail.response.access_token);
-        console.log('we have the token: ' + data.detail.response.access_token);
         this._setAuthorized(true);
       },
 
