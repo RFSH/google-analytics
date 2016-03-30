@@ -17,101 +17,101 @@ Loads gapi.client.analytics, and watches user signed-in state.
 
   <template>
     <google-client-loader id="api"
-    name="analytics"
-    version="v3"
-    on-google-api-load="handleApiLoad"
-    on-google-api-load-error="handleApiFailedToLoad"></google-client-loader>
-    <iron-ajax auto url="/auth/" handle-as="json" on-response="handleAuthSuccess">
+                          name="analytics"
+                          version="v3"
+                          on-google-api-load="handleApiLoad"
+                          on-google-api-load-error="handleApiFailedToLoad"></google-client-loader>
+    <iron-ajax auto url="/auth/" handle-as="json" on-response="handleAuthSuccess" on-error="handleAuthError">
     </iron-ajax>
-    <!-- <google-signin-aware
-    scopes="https://www.googleapis.com/auth/analytics.readonly"
-    on-google-signin-aware-success="handleAuthSuccess"
-    on-google-signin-aware-signed-out="handleAuthSignout"></google-signin-aware> -->
   </template>
 
 </dom-module>
 
 <script>
 
-(function() {
+  (function () {
 
-  'use strict';
+    'use strict';
 
-  Polymer({
+    Polymer({
 
-    is: 'google-analytics-loader',
+      is: 'google-analytics-loader',
 
-    properties: {
-      /**
-      * True when user is authorized, and api is loaded
-      * @attribute allReady
-      * @type {Boolean}
-      */
-      allReady: {
-        type: Boolean,
-        computed: 'computeAllReady(apiReady, authorized)',
-        notify: true
+      properties: {
+        /**
+         * True when user is authorized, and api is loaded
+         * @attribute allReady
+         * @type {Boolean}
+         */
+        allReady: {
+          type: Boolean,
+          computed: 'computeAllReady(apiReady, authorized)',
+          notify: true
+        },
+        /**
+         * True when api is loaded
+         * @attribute apiReady
+         * @type {Boolean}
+         */
+        apiReady: {
+          type: Boolean,
+          value: false,
+          notify: true,
+          readOnly: true
+        },
+        /**
+         * True when user is authorized
+         * @attribute authorized
+         * @type {Boolean}
+         */
+        authorized: {
+          type: Boolean,
+          value: false,
+          notify: true,
+          readOnly: true
+        },
+
+        token: {
+          type: String,
+          value: "",
+          readOnly: true,
+          notify: true
+        }
       },
-      /**
-      * True when api is loaded
-      * @attribute apiReady
-      * @type {Boolean}
-      */
-      apiReady: {
-        type: Boolean,
-        value: false,
-        notify: true,
-        readOnly: true
-      },
-      /**
-      * True when user is authorized
-      * @attribute authorized
-      * @type {Boolean}
-      */
-      authorized: {
-        type: Boolean,
-        value: false,
-        notify: true,
-        readOnly: true
+
+      computeAllReady: function (apiReady, authorized) {
+        return apiReady && authorized;
       },
 
-      token: {
-        type: String,
-        value: "",
-        readOnly: true,
-        notify: true
+      handleApiLoad: function () {
+        if (!gapi || !gapi.client || !gapi.client.analytics) {
+          console.warn("Library not loaded yet!");
+          return;
+        }
+        if (this.token) {
+          gapi.auth.setToken({'access_token': this.token});
+        }
+        this._setApiReady(true);
+
+      },
+
+      handleApiFailedToLoad: function (ev, detail) {
+        this._setApiReady(false);
+        console.error("Api failed to load: ", this.$.api.name, this.$.api.version);
+      },
+
+      handleAuthSuccess: function (data) {
+        this._setToken(data.detail.response.access_token);
+        console.log('we have the token: ' + data.detail.response.access_token);
+        this._setAuthorized(true);
+      },
+
+      handleAuthError: function () {
+        console.log('something bad happened');
+        this._setAuthorized(false);
       }
-    },
+    });
 
-    computeAllReady: function(apiReady, authorized) {
-      return apiReady && authorized;
-    },
-
-    handleApiLoad: function() {
-      if (!gapi || !gapi.client || !gapi.client.analytics || !this.token) {
-        console.warn("Library not loaded yet!");
-        return;
-      }
-      gapi.auth.setToken({'access_token':this.token});
-      this._setApiReady(true);
-
-    },
-
-    handleApiFailedToLoad: function(ev, detail) {
-      this._setApiReady(false);
-      console.error("Api failed to load: ", this.$.api.name, this.$.api.version);
-    },
-
-    handleAuthSuccess: function(data) {
-      console.log('we have the token: '+ this._setToken(data.detail.response.access_token));
-      this._setAuthorized(true);
-    },
-
-    handleAuthSignout: function() {
-      this._setAuthorized(false);
-    }
-  });
-
-}());
+  }());
 
 </script>
